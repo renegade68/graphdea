@@ -324,7 +324,8 @@ program define graphdea, rclass
             (scatteri 1 1, msymbol(O) mcolor(black)), ///
             `title' `xtitle' `ytitle' `name' xline(1, lcolor(gs13)) yline(1, lcolor(gs13)) ///
             xlabel(0(.5)2, labsize(small)) ylabel(, angle(horizontal) labsize(small)) ///
-            legend(order(1 "CRS" 2 "VRS" 3 "VRS left boundary" 4 "Observed DMU") rows(2) size(small))
+            legend(order(1 "CRS" 2 "VRS" 3 "VRS left boundary" 4 "Observed DMU") rows(2) size(small) ///
+                symxsize(5) colgap(2) region(margin(l=2 r=6 t=1 b=1)))
         restore
         return matrix section = `section'
         return scalar N = `N'
