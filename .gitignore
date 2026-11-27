@@ -1,0 +1,9 @@
+.DS_Store
+._*
+*.log
+*.smcl
+*.stswp
+/Archive 4.zip
+/graphdea-*.pdf
+/graphdea-*.png
+/outmix.svg
