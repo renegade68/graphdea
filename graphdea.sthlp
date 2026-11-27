@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 0.30.1  27nov2026}{...}
+{* *! version 0.31.0  27nov2026}{...}
 {vieweralsosee "graph export" "help graph export"}{...}
 {viewerjumpto "Description" "graphdea##description"}{...}
 {viewerjumpto "Syntax" "graphdea##syntax"}{...}
@@ -16,7 +16,7 @@
 {title:Description}
 
 {pstd}{cmd:graphdea} draws data envelopment analysis (DEA) graphs from the
-dataset in memory. It supports one input and one output, two inputs and one
+dataset in memory. The fixed-mix section supports multiple inputs and outputs. Other views support one input and one output, two inputs and one
 output, or one input and two outputs. Each selected observation represents
 a decision-making unit (DMU), or a DMU in a particular period for a
 productivity comparison. The command draws a monochrome Stata graph, stores
@@ -50,6 +50,19 @@ For either cross-section, supply an explicit slice or select a focus DMU.
 
 {p 8 12 2}{cmd:graphdea} {it:input} {cmd:=} {it:good_output} {ifin}{cmd:, bad(}{it:undesirable_output}{cmd:)}
 [{cmd:view(weakdisposal)} {cmd:at(}{it:focus | inputvar=#}{cmd:)} {cmd:plan(}{it:bad good}{cmd:)}]{p_end}
+
+{p 8 12 2}{cmd:graphdea} {it:inputvars} {cmd:=} {it:outputvars} {ifin}{cmd:, view(raysection) dmu(}{it:id}{cmd:) focus(}{it:value}{cmd:)}{p_end}
+
+{pstd}{cmd:view(raysection)} draws CRS and VRS at the selected observation's fixed input
+and output proportions. Each axis measures multiples of its observed bundle, with
+the focus at (1,1). All complete observations in the reference sample enter both
+technologies. Inputs and outputs must be strictly positive. The dashed CRS line
+and solid VRS curve give the maximum proportional output for each input multiple.
+The dotted edge marks the minimum feasible VRS input multiple. The graph connects
+grid solutions from 0 to 2 in steps of .01 and includes the VRS left endpoint.
+The matrix {cmd:r(section)} contains input_multiple, crs, and vrs; infeasible VRS
+values are missing. Change {cmd:focus()} to view another mix. The options {cmd:name()},
+{cmd:title()}, {cmd:xtitle()}, and {cmd:ytitle()} customize the graph.{p_end}
 
 {pstd}The production diagrams use the same physical length per numeric unit on the horizontal
 and vertical axes. Equal axis ranges produce a square plotting area. When the
@@ -1087,7 +1100,7 @@ and {cmd:r(ae)} and {cmd:r(re)} give allocative and revenue efficiency.{p_end}
 {pstd}Choonjoo Lee, {browse "mailto:bloom.rampike@gmail.com":bloom.rampike@gmail.com}.{p_end}
 
 {pstd}Suggested citation: Lee, Choonjoo. 2026. {it:graphdea: Data envelopment analysis graphs}.
-Stata package, version 0.30.1. {browse "https://github.com/renegade68/graphdea":Package repository}.{p_end}
+Stata package, version 0.31.0. {browse "https://github.com/renegade68/graphdea":Package repository}.{p_end}
 
 {pstd}Copyright (c) 2026 Choonjoo Lee. Licensed under the Academic Free License version 3.0
 ({cmd:AFL-3.0}). {browse "https://opensource.org/license/AFL-3.0":License text}.{p_end}

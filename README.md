@@ -1,8 +1,13 @@
 # graphdea
 
-Draw monochrome data envelopment analysis (DEA) graphs in Stata using your own data. Compare production frontiers, trace a decision-making unit's projection onto the frontier, or show how input prices change its cost-minimizing target. The command supports one input and one output, two inputs and one output, or one input and two outputs. It also draws Malmquist productivity comparisons for panel data.
+Draw monochrome data envelopment analysis (DEA) graphs in Stata using your own data. Compare production frontiers, trace a decision-making unit's projection onto the frontier, or show how input prices change its cost-minimizing target. The fixed-mix view supports multiple inputs and outputs. The other views support one input and one output, two inputs and one output, or one input and two outputs. It also draws Malmquist productivity comparisons for panel data.
 
-Version 0.30.1 requires Stata 16 or later. The Mata routines are included in the ado-file.
+Version 0.31.0 requires Stata 16 or later. The Mata routines are included in the ado-file.
+
+For a two-dimensional CRS/VRS comparison at one observed DMU's mix, run
+`graphdea x1-x5 = y1-y3, view(raysection) dmu(id) focus("D")`.
+Change the identifier to draw a different section of the same technology.
+[Worked example](example_5x3_section.do) · [D and E compared](docs/figures/graphdea-5x3-section.png)
 
 ## Install from a local copy
 
@@ -65,7 +70,7 @@ When editing the ado-file, run [graphdea_reload.do](graphdea_reload.do) from the
 
 Package author and contact: Choonjoo Lee <bloom.rampike@gmail.com>.
 
-To cite this version: Lee, Choonjoo. 2026. *graphdea: Data envelopment analysis graphs*. Stata package, version 0.30.1. [Repository](https://github.com/renegade68/graphdea).
+To cite this version: Lee, Choonjoo. 2026. *graphdea: Data envelopment analysis graphs*. Stata package, version 0.31.0. [Repository](https://github.com/renegade68/graphdea).
 
 For the background to the 3D graphics, see Choonjoo Lee’s reply of 23 October 2026 (post #4) on viewing a surface with a highlighted cross-section. Chen Samulsion opened the discussion and illustrated Lee’s projection code. The filled DEA section in `graphdea` draws on Lee’s *From automatic layout to 3D geometry* example, which acknowledges Samulsion’s surface illustration. [Statalist discussion](https://www.statalist.org/forums/forum/general-stata-discussion/general/1787645-surface_view-a-150-plus-line-piece-of-code-brimming-with-geek-spirit).
 

@@ -1,4 +1,4 @@
-*! version 0.30.1  27nov2026
+*! version 0.31.0  27nov2026
 * Copyright (c) 2026 Choonjoo Lee <bloom.rampike@gmail.com>
 * Licensed under the Academic Free License version 3.0
 * SPDX-License-Identifier: AFL-3.0
@@ -80,8 +80,20 @@ program define graphdea, rclass
     local vars `x' `y' `bad'
     local vars : list retokenize vars
     local unique : list uniq vars
-    if `ninputs' + `noutputs' > 3 | "`unique'" != "`vars'" {
-        di as err "supported dimensions are 1 input/1 output, 2 inputs/1 output, or 1 input/2 outputs"
+    local rayview = "`view'" == "raysection"
+    if `rayview' {
+        if `"`focus'"' == "" | "`dmu'" == "" {
+            di as err "view(raysection) requires dmu() and focus()"
+            exit 198
+        }
+        if "`model'`rts'`show'`orientation'`layout'`at'`w'`p'`gx'`gy'`azimuth'`elevation'`sectionfill'" != "" | ///
+                !inlist(strtrim(itrim("`compare'")), "", "crs vrs", "vrs crs") {
+            di as err "view(raysection) draws the CRS and VRS comparison"
+            exit 198
+        }
+    }
+    if (!`rayview' & `ninputs' + `noutputs' > 3) | "`unique'" != "`vars'" {
+        di as err "use distinct variables; for more than three variables specify view(raysection)"
         exit 198
     }
     if `ninputs' == 2 & "`view'" == "" local view isoquant
@@ -291,6 +303,33 @@ program define graphdea, rclass
             else di as err "pair() must identify two distinct DMUs, each unique in the reference sample"
             exit 459
         }
+    }
+    if `rayview' {
+        tempname section
+        mata: _graphdea_raysection("`x'", "`y'", "`selected'", "`touse'", "`section'")
+        matrix colnames `section' = input_multiple crs vrs
+        preserve
+        quietly drop _all
+        quietly svmat double `section', names(col)
+        quietly summarize input_multiple if !missing(vrs), meanonly
+        local start = r(min)
+        quietly summarize vrs if input_multiple == `start', meanonly
+        local height = r(min)
+        if `"`title'"' == "" local title title("CRS and VRS at the mix of DMU `focus'")
+        if `"`xtitle'"' == "" local xtitle xtitle("Input multiple of `focus'", size(medsmall) margin(t=3))
+        if `"`ytitle'"' == "" local ytitle ytitle("Output multiple of `focus'", size(medsmall) margin(r=3))
+        twoway (line crs input_multiple, lcolor(black) lpattern(dash)) ///
+            (line vrs input_multiple, lcolor(black)) ///
+            (pci 0 `start' `height' `start', lcolor(black) lpattern(dot)) ///
+            (scatteri 1 1, msymbol(O) mcolor(black)), ///
+            `title' `xtitle' `ytitle' `name' xline(1, lcolor(gs13)) yline(1, lcolor(gs13)) ///
+            xlabel(0(.5)2, labsize(small)) ylabel(, angle(horizontal) labsize(small)) ///
+            legend(order(1 "CRS" 2 "VRS" 3 "VRS left boundary" 4 "Observed DMU") rows(2) size(small))
+        restore
+        return matrix section = `section'
+        return scalar N = `N'
+        return local view raysection
+        exit
     }
     if "`chain'"!="" {
         if "`benchmark'"=="" local benchmark contemporaneous
@@ -1960,6 +1999,52 @@ end
 
 version 16.0
 mata:
+// Work in multiples of the selected observation to keep each mix fixed.
+void _graphdea_raysection(string scalar xs, string scalar ys, string scalar selected,
+                          string scalar sample, string scalar result)
+{
+    class LinearProgram scalar lp
+    real matrix X, Y, constraints, section
+    real colvector a, rhs
+    real scalar ref, n, i, amin, slope
+    X = st_data(.,tokens(xs),sample)
+    Y = st_data(.,tokens(ys),sample)
+    ref = selectindex(st_data(.,selected,sample))[1]
+    X = X :/ X[ref,]
+    Y = Y :/ Y[ref,]
+    n = rows(X)
+    lp.setBounds(J(1,n+1,0),J(1,n+1,.))
+
+    // Find the left edge of the convex VRS technology: minimize a at zero output.
+    lp.setEquality((J(1,n,1),0),1)
+    lp.setMaxOrMin("min")
+    lp.setCoefficients((J(1,n,0),1))
+    lp.setInequality((X',-J(cols(X),1,1)),J(cols(X),1,0))
+    amin = lp.optimize()
+    assert(lp.converged())
+    amin = min((1,amin))
+
+    // Maximize b subject to X'lambda <= a and Y'lambda >= b.
+    constraints = (X',J(cols(X),1,0)) \ (-Y',J(cols(Y),1,1))
+    rhs = J(cols(X),1,1) \ J(cols(Y),1,0)
+    lp.setMaxOrMin("max")
+    a = uniqrows(sort(((0::200)/100 \ amin),1))
+    section = a,J(rows(a),2,.)
+    for (i=1; i<=rows(a); i++) {
+        if (a[i]<amin) continue
+        lp.setInequality(constraints,a[i]*rhs)
+        section[i,3] = lp.optimize()
+        assert(lp.converged())
+    }
+    // CRS homogeneity determines the whole ray from the optimum at a=1.
+    lp.setEquality(J(0,n+1,.),J(0,1,.))
+    lp.setInequality(constraints,rhs)
+    slope = lp.optimize()
+    assert(lp.converged())
+    section[,2] = a*slope
+    st_matrix(result,section)
+}
+
 // Vertices in increasing input order. At repeated inputs keep the largest output.
 real matrix _graphdea_peaks(real matrix xy)
 {

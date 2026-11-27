@@ -2,7 +2,7 @@ v 3
 d graphdea. Graphical illustrations of data envelopment analysis
 d
 d Draw monochrome production frontiers, isoquants, output sets, and productivity comparisons.
-d Version 0.30.1. Requires Stata 16 or later.
+d Version 0.31.0. Requires Stata 16 or later.
 d Author: Choonjoo Lee
 d Contact: bloom.rampike@gmail.com
 d License: Academic Free License version 3.0 (AFL-3.0)
@@ -37,3 +37,4 @@ f example_super.do
 f example_surface.do
 f example_weakdisposal.do
 f example_weights.do
+f example_5x3_section.do
