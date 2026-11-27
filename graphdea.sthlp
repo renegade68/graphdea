@@ -8,6 +8,8 @@
 {viewerjumpto "Graph appearance" "graphdea##appearance"}{...}
 {viewerjumpto "Examples" "graphdea##examples"}{...}
 {viewerjumpto "Stored results" "graphdea##results"}{...}
+{viewerjumpto "Author and license" "graphdea##author"}{...}
+{viewerjumpto "Graphics reference" "graphdea##graphicsref"}{...}
 {title:graphdea — Data envelopment analysis graphs}
 
 {marker description}{...}
@@ -1079,10 +1081,28 @@ as zero.{p_end}
 With prices the revenue column is populated, the {cmd:revenuemax} row gives M,
 and {cmd:r(ae)} and {cmd:r(re)} give allocative and revenue efficiency.{p_end}
 
+{marker author}{...}
+{title:Author and license}
+
+{pstd}Choonjoo Lee, {browse "mailto:bloom.rampike@gmail.com":bloom.rampike@gmail.com}.{p_end}
+
+{pstd}Suggested citation: Lee, Choonjoo. 2026. {it:graphdea: Data envelopment analysis graphs}.
+Stata package, version 0.30.1. {browse "https://github.com/renegade68/graphdea":Package repository}.{p_end}
+
+{pstd}Copyright (c) 2026 Choonjoo Lee. Licensed under the Academic Free License version 3.0
+({cmd:AFL-3.0}). {browse "https://opensource.org/license/AFL-3.0":License text}.{p_end}
+
+{marker graphicsref}{...}
 {title:Graphics reference}
 
 {pstd}The projected polygon rendering for {cmd:sectionfill} draws on
 Choonjoo Lee's {it:From automatic layout to 3D geometry} example
-({cmd:stata_word3d_layout/run_layout_word3d.do} in {cmd:Archive 4.zip}).
-That example credits Chen Samulsion's surface illustration. Here the polygon
-vertices come from the DEA cross-section; the Stata renderer uses {cmd:twoway area}.{p_end}
+({cmd:run_layout_word3d.do}), which credits Chen Samulsion's surface illustration.
+In {cmd:graphdea}, the vertices come from the DEA cross-section and
+{cmd:twoway area} draws the projected polygon.{p_end}
+
+{pstd}Lee, Choonjoo. 23 October 2026. Reply (post #4) in
+{it:surface_view: A 150-plus-line piece of code brimming with Geek spirit}.
+Statalist. Lee illustrates a surface with a highlighted cross-section.
+Chen Samulsion opened the discussion and illustrated Lee's projection code.
+{browse "https://www.statalist.org/forums/forum/general-stata-discussion/general/1787645-surface_view-a-150-plus-line-piece-of-code-brimming-with-geek-spirit":Statalist discussion}.{p_end}

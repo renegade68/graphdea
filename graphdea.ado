@@ -1,4 +1,7 @@
 *! version 0.30.1  27nov2026
+* Copyright (c) 2026 Choonjoo Lee <bloom.rampike@gmail.com>
+* Licensed under the Academic Free License version 3.0
+* SPDX-License-Identifier: AFL-3.0
 program define graphdea, rclass
     version 16.0
     syntax anything(name=spec equalok) [if] [in], [Inputs(varlist numeric) ///
@@ -3270,7 +3273,8 @@ real matrix _graphdea_fdhmesh(real matrix obs, real scalar outputset)
 }
 
 // Painter ordering for one horizontal face, adapted from the projected polygon
-// layers in Archive 4.zip, stata_word3d_layout/run_layout_word3d.do.
+// layers in Choonjoo Lee's From automatic layout to 3D geometry example.
+// See the graphics reference in help graphdea for the related Statalist discussion.
 // Split a crossing exactly at z=q so only its far portion goes below the fill.
 real matrix _graphdea_sectiondepth(real matrix source, real scalar q, real scalar elevation)
 {

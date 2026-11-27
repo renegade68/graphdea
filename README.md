@@ -59,4 +59,16 @@ The surface shows how attainable output combinations change with the input budge
 
 The [package manifest](graphdea.pkg) lists the installed command, its help, and the 25 optional examples. The [test do-files](tests/) exercise the command, its returned results, and its Mata geometry. Run tests in a fresh Stata session because they create and clear test data. For example, after installation, run `do "/path/to/graphdea/tests/selectors.do"` to check decimal identifiers, periods, and slice levels.
 
-When editing the ado-file, run [graphdea_reload.do](graphdea_reload.do) from the repository root to load the working copy. The graphics reference in [the help file](graphdea.sthlp) credits the source used for the projected polygon rendering.
+When editing the ado-file, run [graphdea_reload.do](graphdea_reload.do) from the repository root to load the working copy.
+
+## Author and citation
+
+Package author and contact: Choonjoo Lee <bloom.rampike@gmail.com>.
+
+To cite this version: Lee, Choonjoo. 2026. *graphdea: Data envelopment analysis graphs*. Stata package, version 0.30.1. [Repository](https://github.com/renegade68/graphdea).
+
+For the background to the 3D graphics, see Choonjoo Lee’s reply of 23 October 2026 (post #4) on viewing a surface with a highlighted cross-section. Chen Samulsion opened the discussion and illustrated Lee’s projection code. The filled DEA section in `graphdea` draws on Lee’s *From automatic layout to 3D geometry* example, which acknowledges Samulsion’s surface illustration. [Statalist discussion](https://www.statalist.org/forums/forum/general-stata-discussion/general/1787645-surface_view-a-150-plus-line-piece-of-code-brimming-with-geek-spirit).
+
+## License
+
+Copyright © 2026 Choonjoo Lee. Licensed under the Academic Free License version 3.0 (SPDX: `AFL-3.0`). [Full license text](LICENSE).
